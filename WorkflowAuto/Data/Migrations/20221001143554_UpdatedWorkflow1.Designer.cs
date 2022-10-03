@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkflowAuto.Data;
 
@@ -11,9 +12,10 @@ using WorkflowAuto.Data;
 namespace WorkflowAuto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221001143554_UpdatedWorkflow1")]
+    partial class UpdatedWorkflow1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,7 +319,7 @@ namespace WorkflowAuto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ApplicationId")
+                    b.Property<int>("ApplicationID")
                         .HasColumnType("int");
 
                     b.Property<int>("AssociatedRoles")
@@ -341,7 +343,7 @@ namespace WorkflowAuto.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId");
+                    b.HasIndex("ApplicationID");
 
                     b.ToTable("Workflows");
                 });
@@ -401,7 +403,7 @@ namespace WorkflowAuto.Data.Migrations
                 {
                     b.HasOne("WorkflowAuto.Data.Application", "Application")
                         .WithMany()
-                        .HasForeignKey("ApplicationId")
+                        .HasForeignKey("ApplicationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

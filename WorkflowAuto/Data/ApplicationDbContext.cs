@@ -9,5 +9,8 @@ namespace WorkflowAuto.Data
             : base(options)
         {
         }
+
+        public DbSet<Workflow> Workflows { get; set; }
+        public DbSet<Application> Applications { get; set; }
     }
 }

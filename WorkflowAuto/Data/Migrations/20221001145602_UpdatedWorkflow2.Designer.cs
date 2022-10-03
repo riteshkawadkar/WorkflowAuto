@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkflowAuto.Data;
 
@@ -11,9 +12,10 @@ using WorkflowAuto.Data;
 namespace WorkflowAuto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221001145602_UpdatedWorkflow2")]
+    partial class UpdatedWorkflow2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,7 +227,12 @@ namespace WorkflowAuto.Data.Migrations
                     b.Property<string>("Version")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("WorkflowId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkflowId");
 
                     b.ToTable("Applications");
                 });
@@ -397,6 +404,13 @@ namespace WorkflowAuto.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WorkflowAuto.Data.Application", b =>
+                {
+                    b.HasOne("WorkflowAuto.Data.Workflow", null)
+                        .WithMany("ApplicationName")
+                        .HasForeignKey("WorkflowId");
+                });
+
             modelBuilder.Entity("WorkflowAuto.Data.Workflow", b =>
                 {
                     b.HasOne("WorkflowAuto.Data.Application", "Application")
@@ -406,6 +420,11 @@ namespace WorkflowAuto.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Application");
+                });
+
+            modelBuilder.Entity("WorkflowAuto.Data.Workflow", b =>
+                {
+                    b.Navigation("ApplicationName");
                 });
 #pragma warning restore 612, 618
         }

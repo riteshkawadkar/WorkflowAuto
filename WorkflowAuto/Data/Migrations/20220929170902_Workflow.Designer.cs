@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkflowAuto.Data;
 
@@ -11,9 +12,10 @@ using WorkflowAuto.Data;
 namespace WorkflowAuto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220929170902_Workflow")]
+    partial class Workflow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,62 +169,14 @@ namespace WorkflowAuto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BackupMode")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CSVCompletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CSVStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ConnectedToComputer")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ConnectedToEquipment")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ConnectedToInstrumnet")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ConnectedToServer")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FileSystem")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GAMPCategory")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GXPStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Manufacturer")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Priviledges")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ServerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VendorDetails")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Version")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -317,11 +271,12 @@ namespace WorkflowAuto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ApplicationId")
+                    b.Property<int>("ApplicationID")
                         .HasColumnType("int");
 
-                    b.Property<int>("AssociatedRoles")
-                        .HasColumnType("int");
+                    b.Property<string>("AssociatedRoles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -329,21 +284,47 @@ namespace WorkflowAuto.Data.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DeliveryRole")
-                        .HasColumnType("int");
+                    b.Property<string>("DeliveryRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WorkflowType")
+                    b.Property<int>("WorkflowTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId");
+                    b.HasIndex("ApplicationID");
+
+                    b.HasIndex("WorkflowTypeId");
 
                     b.ToTable("Workflows");
+                });
+
+            modelBuilder.Entity("WorkflowAuto.Data.WorkflowType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkflowTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -401,11 +382,19 @@ namespace WorkflowAuto.Data.Migrations
                 {
                     b.HasOne("WorkflowAuto.Data.Application", "Application")
                         .WithMany()
-                        .HasForeignKey("ApplicationId")
+                        .HasForeignKey("ApplicationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkflowAuto.Data.WorkflowType", "WorkflowType")
+                        .WithMany()
+                        .HasForeignKey("WorkflowTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Application");
+
+                    b.Navigation("WorkflowType");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkflowAuto.Data;
 
@@ -11,9 +12,10 @@ using WorkflowAuto.Data;
 namespace WorkflowAuto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221001094727_UpdatedApplicationTable")]
+    partial class UpdatedApplicationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,26 +169,20 @@ namespace WorkflowAuto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BackupMode")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CSVCompletedOn")
+                    b.Property<DateTime>("CSVCompletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CSVStatus")
-                        .HasColumnType("int");
+                    b.Property<bool>("CSVStatus")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("ConnectedToComputer")
-                        .HasColumnType("int");
+                    b.Property<bool>("ConnectedToComputer")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("ConnectedToEquipment")
-                        .HasColumnType("int");
+                    b.Property<bool>("ConnectedToInstrumnetorEquipment")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("ConnectedToInstrumnet")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ConnectedToServer")
-                        .HasColumnType("int");
+                    b.Property<bool>("ConnectedToServer")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -194,35 +190,39 @@ namespace WorkflowAuto.Data.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FileSystem")
-                        .HasColumnType("int");
+                    b.Property<string>("FileSystem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GAMPCategory")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GXPStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("GAMPCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Manufacturer")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Priviledges")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ServerName")
+                    b.Property<string>("Priviledges")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("ServerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("VendorDetails")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Version")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -317,11 +317,12 @@ namespace WorkflowAuto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ApplicationId")
+                    b.Property<int>("ApplicationID")
                         .HasColumnType("int");
 
-                    b.Property<int>("AssociatedRoles")
-                        .HasColumnType("int");
+                    b.Property<string>("AssociatedRoles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -329,8 +330,9 @@ namespace WorkflowAuto.Data.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DeliveryRole")
-                        .HasColumnType("int");
+                    b.Property<string>("DeliveryRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -341,7 +343,7 @@ namespace WorkflowAuto.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId");
+                    b.HasIndex("ApplicationID");
 
                     b.ToTable("Workflows");
                 });
@@ -401,7 +403,7 @@ namespace WorkflowAuto.Data.Migrations
                 {
                     b.HasOne("WorkflowAuto.Data.Application", "Application")
                         .WithMany()
-                        .HasForeignKey("ApplicationId")
+                        .HasForeignKey("ApplicationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
