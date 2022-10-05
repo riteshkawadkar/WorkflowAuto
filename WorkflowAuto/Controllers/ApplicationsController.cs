@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WorkflowAuto.Contracts;
 using WorkflowAuto.Data;
 using WorkflowAuto.Models;
 
@@ -13,31 +14,27 @@ namespace WorkflowAuto.Controllers
 {
     public class ApplicationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationRepository _applicationRepository;
         private readonly IMapper _mapper;
 
-        public ApplicationsController(ApplicationDbContext context, IMapper mapper)
+        public ApplicationsController(IApplicationRepository applicationRepository, IMapper mapper)
         {
-            _context = context;
+            _applicationRepository = applicationRepository;
             _mapper = mapper;
         }
 
         // GET: Applications
         public async Task<IActionResult> Index()
         {
-            var applicationVMList = _mapper.Map<List<ApplicationIndexVM>>(await _context.Applications.ToListAsync());
+            //var applicationVMList = _mapper.Map<List<ApplicationIndexVM>>(await _applicationRepository.Applications.ToListAsync());
+            var applicationVMList = _mapper.Map<List<ApplicationIndexVM>>(await _applicationRepository.GetAllAsync());
             return View(applicationVMList);
         }
 
         // GET: Applications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Applications == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications.FindAsync(id);
+            var application = await _applicationRepository.GetAsync(id);
             if (application == null)
             {
                 return NotFound();
@@ -63,9 +60,8 @@ namespace WorkflowAuto.Controllers
             if (ModelState.IsValid)
             {
                 var application = _mapper.Map<Application>(applicationVM);
-                _context.Add(application);
+                await _applicationRepository.CreateAsync(application);
 
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(applicationVM);
@@ -74,12 +70,7 @@ namespace WorkflowAuto.Controllers
         // GET: Applications/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Applications == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications.FindAsync(id);
+            var application = await _applicationRepository.GetAsync(id);
             if (application == null)
             {
                 return NotFound();
@@ -106,12 +97,11 @@ namespace WorkflowAuto.Controllers
                 try
                 {
                     var application = _mapper.Map<Application>(applicationVM);
-                    _context.Update(application);
-                    await _context.SaveChangesAsync();
+                    await _applicationRepository.UpdateAsync(application);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ApplicationExists(applicationVM.Id))
+                    if (!await _applicationRepository.ExistsAsync(id))
                     {
                         return NotFound();
                     }
@@ -125,46 +115,18 @@ namespace WorkflowAuto.Controllers
             return View(applicationVM);
         }
 
-        // GET: Applications/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Applications == null)
-            {
-                return NotFound();
-            }
-
-            var application = await _context.Applications
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (application == null)
-            {
-                return NotFound();
-            }
-
-            return View(application);
-        }
+        
 
         // POST: Applications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Applications == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Applications'  is null.");
-            }
-            var application = await _context.Applications.FindAsync(id);
-            if (application != null)
-            {
-                _context.Applications.Remove(application);
-            }
-            
-            await _context.SaveChangesAsync();
+
+            await _applicationRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ApplicationExists(int id)
-        {
-          return _context.Applications.Any(e => e.Id == id);
-        }
+ 
     }
 }
