@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkflowAuto.Data;
 
@@ -11,9 +12,10 @@ using WorkflowAuto.Data;
 namespace WorkflowAuto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221005110711_changedDatabasename")]
+    partial class changedDatabasename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,14 +54,14 @@ namespace WorkflowAuto.Data.Migrations
                         new
                         {
                             Id = "6efb49fb-76fa-4211-9ee7-5423db9f08a0",
-                            ConcurrencyStamp = "67710ce7-7d13-4ba2-88e2-e0739fb88e10",
+                            ConcurrencyStamp = "17939ce7-ea46-45e7-bbdb-067b024aa154",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "c4194f76-1993-4a8d-8505-58cd21e73279",
-                            ConcurrencyStamp = "d360dd6e-9779-402a-9aa1-3f455c8e9659",
+                            ConcurrencyStamp = "887aba26-23cc-46cc-8b10-cede402e6448",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -336,7 +338,7 @@ namespace WorkflowAuto.Data.Migrations
                         {
                             Id = "0c4d579d-2758-48c4-848a-19afa675662f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e00e792d-252b-4163-91a2-8e23b87732b3",
+                            ConcurrencyStamp = "4bfc4c8a-14da-4480-83c5-6e56e98b929a",
                             DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@localhost.com",
@@ -345,12 +347,10 @@ namespace WorkflowAuto.Data.Migrations
                             LastName = "Admin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
-                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHw5Rue8AWgwiU506D9T6MiW/naw2Jz5XYbPOHuhC+Qm7LA+xkj0PHZw9VKsr9fHiw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENa5vrGSlSeBVwjfoGUOHXJZANCLSDpIqYzFtQsVKTH2xDyTLO0K0dgjUkusFkuKYg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a170227f-4d45-4196-90f8-e701d71d5437",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@localhost.com"
+                            SecurityStamp = "a84f1d94-300f-4939-8421-2339f0ee7bb2",
+                            TwoFactorEnabled = false
                         });
                 });
 
