@@ -10,6 +10,7 @@ namespace WorkflowAuto.Configurations
         {
             CreateMap<Application, ApplicationVM>().ReverseMap();
             CreateMap<Application, ApplicationIndexVM>().ReverseMap();
+            CreateMap<Employee, EmployeeListVM>().ReverseMap();
         }
     }
 }

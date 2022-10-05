@@ -94,12 +94,12 @@ namespace WorkflowAuto.Areas.Identity.Pages.Account
 
             [DataType(DataType.Date)]
             [Display(Name = "Date Of Birth")]
-            public DateTime DateOfBirth { get; set; }
+            public DateTime? DateOfBirth { get; set; }
 
 
             [DataType(DataType.Date)]
             [Display(Name = "Date Of Joining")]
-            public DateTime DateJoined { get; set; }
+            public DateTime? DateJoined { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -140,8 +140,8 @@ namespace WorkflowAuto.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.FirstName = Input.FirstName;   
                 user.LastName = Input.LastName;
-                user.DateOfBirth = Input.DateOfBirth;
-                user.DateJoined = Input.DateJoined;
+                user.DateOfBirth = Input.DateOfBirth ?? default;
+                user.DateJoined = Input.DateJoined ?? default;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

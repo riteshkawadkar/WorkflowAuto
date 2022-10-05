@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WorkflowAuto.Configurations.Entities;
+using WorkflowAuto.Models;
 
 namespace WorkflowAuto.Data
 {
@@ -22,5 +23,6 @@ namespace WorkflowAuto.Data
 
         public DbSet<Workflow> Workflows { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<WorkflowAuto.Models.EmployeeListVM> EmployeeListVM { get; set; }
     }
 }
